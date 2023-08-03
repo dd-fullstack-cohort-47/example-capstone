@@ -17,7 +17,7 @@ export type Profile = z.infer<typeof ProfileSchema>
 /**
  * updates a profile in the profile table
  * @param profile
- * @returns {Promise<string>}
+ * @returns {Promise<string>} 'Profile successfully updated'
  */
 export async function updateProfile (profile: Profile): Promise<string> {
     const {profileId, profileAbout, profileActivationToken, profileEmail, profileHash, profileImageUrl, profileName} = profile

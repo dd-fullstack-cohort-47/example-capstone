@@ -45,8 +45,8 @@ export class App {
 
   // private method for setting up routes in their basic sense (ie. any route that performs an action on profiles starts with /profiles)
   private routes (): void {
-    this.app.use('/apis', indexRoute)
-    this.app.use('/apis/sign-up', signUpRoute)
+    this.app.use(indexRoute.basePath, indexRoute.router)
+    this.app.use(signUpRoute.basePath, signUpRoute.router)
   }
 
   // starts the server and tells the terminal to post a message that the server is running and on what port

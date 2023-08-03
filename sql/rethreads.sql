@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS profile (
     profile_activation_token CHAR(32),
     -- to make sure duplicate data cannot exist, create a unique index
     profile_email VARCHAR(128) NOT NULL UNIQUE,
-    profile_image_url  VARCHAR(255),
     -- to make something optional, exclude the not null
     profile_hash CHAR(97) NOT NULL,
+    profile_image_url  VARCHAR(255),
     profile_name VARCHAR(32) NOT NULL UNIQUE
 );
 
