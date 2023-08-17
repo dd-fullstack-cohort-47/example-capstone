@@ -16,7 +16,7 @@ export class App {
   constructor (
     private readonly port?: number | string
   ) {
-    this.redisClient = createClient({ legacyMode: true, socket: { host: process.env.REDIS_HOST } })
+    this.redisClient = createClient({  socket: { host: process.env.REDIS_HOST } })
     this.redisClient.connect().catch(console.error)
 
     this.redisStore = new RedisStore({ client: this.redisClient })
