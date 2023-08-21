@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response} from 'express'
+import {Request, Response} from 'express'
 import {Status} from '../../utils/interfaces/Status'
 import formData from 'form-data'
 import Mailgun from 'mailgun.js'
