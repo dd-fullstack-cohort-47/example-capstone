@@ -1,5 +1,12 @@
 import {Request, Response} from 'express'
-import {deleteLike, insertLike, Like, selectLikeByLikeId, selectLikesByLikeThreadId} from "./like.model";
+import {
+    deleteLike,
+    insertLike,
+    Like,
+    selectLikeByLikeId,
+    selectLikesByLikeProfileId,
+    selectLikesByLikeThreadId
+} from "./like.model";
 import {Profile} from "../profile/profile.model";
 import {Status} from "../../utils/interfaces/Status";
 
@@ -18,6 +25,34 @@ export async function getLikesByLikeThreadIdController(request: Request, respons
         const data = await selectLikesByLikeThreadId(likeThreadId)
 
         // return the status and the likes associated with the thread
+        return response.json({status: 200, message: null, data})
+
+        // if an error occurs, return the error to the user
+    } catch (error) {
+        return response.json({
+            status: 500,
+            message: '',
+            data: []
+        })
+    }
+}
+
+/**
+ * Handles GET request for all likes associated with a profile
+ * @param request object containing the like profile id
+ * @param response object containing the status of the request and the likes associated with the profile
+ * @returns status object containing the status of the request and the likes associated with the profile
+ */
+export async function getLikesByLikeProfileIdController(request: Request, response: Response): Promise<Response> {
+    try {
+
+        // deconstruct the like thread id from the request parameters
+        const {likeProfileId} = request.params
+
+        // select the likes by like profile id
+        const data = await selectLikesByLikeProfileId(likeProfileId)
+
+        // return the status and the likes associated with the profile
         return response.json({status: 200, message: null, data})
 
         // if an error occurs, return the error to the user

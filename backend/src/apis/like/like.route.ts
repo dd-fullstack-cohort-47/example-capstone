@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import {isLoggedInController} from "../../utils/controllers/isLoggedIn.controller";
 import {
-    deleteLikeController,
+    deleteLikeController, getLikesByLikeProfileIdController,
     getLikesByLikeThreadIdController,
     postLikeController,
     toggleLikeController
@@ -25,6 +25,9 @@ router.route('/toggle')
 router.route('/likeThreadId/:likeThreadId')
     .get(getLikesByLikeThreadIdController)
     .delete(isLoggedInController, deleteLikeController)
+
+router.route('/profileId/:profileId')
+    .get(getLikesByLikeProfileIdController)
 
 // export the router with the basePath and router object
 export const likeRoute = {basePath, router}
