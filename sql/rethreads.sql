@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS keyword (
 CREATE TABLE IF NOT EXISTS thread (
     thread_id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
     thread_profile_id UUID NOT NULL REFERENCES profile(profile_id),
-    thread_reply_thread_id UUID REFERENCES thread(thread_id),
-    thread_content VARCHAR(4096) NOT NULL,
-    thread_date timestamptz NOT NULL DEFAULT NOW(),
+    thread_reply_thread_id UUID REFERENCES thread(thread_id) ON DELETE CASCADE,
+    thread_content VARCHAR(140) NOT NULL,
+    thread_datetime timestamptz NOT NULL DEFAULT NOW(),
     thread_image_url VARCHAR(255)
 );
 
@@ -46,12 +46,13 @@ CREATE TABLE IF NOT EXISTS follow (
 
 CREATE TABLE IF NOT EXISTS tag (
     tag_keyword_id UUID NOT NULL REFERENCES keyword(keyword_id),
-    tag_thread_id UUID NOT NULL REFERENCES thread(thread_id),
+    tag_thread_id UUID NOT NULL REFERENCES thread(thread_id) ON DELETE CASCADE,
     PRIMARY KEY(tag_thread_id, tag_keyword_id)
 );
 
 CREATE TABLE IF NOT EXISTS "like" (
     like_profile_id UUID NOT NULL REFERENCES profile(profile_id),
-    like_thread_id UUID NOT NULL REFERENCES thread(thread_id),
+    like_thread_id UUID NOT NULL REFERENCES thread(thread_id) ON DELETE CASCADE,
+    like_datetime timestamptz NOT NULL DEFAULT NOW(),
     PRIMARY KEY(like_profile_id, like_thread_id)
 );

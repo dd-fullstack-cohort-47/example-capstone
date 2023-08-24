@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import {isLoggedInController} from "../../utils/controllers/isLoggedIn.controller";
 import {
     deleteLikeController,
@@ -27,4 +27,4 @@ router.route('/likeThreadId/:likeThreadId')
     .delete(isLoggedInController, deleteLikeController)
 
 // export the router with the basePath and router object
-export const likeRoute = { basePath, router }
+export const likeRoute = {basePath, router}

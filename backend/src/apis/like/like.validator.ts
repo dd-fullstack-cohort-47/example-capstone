@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import {z} from 'zod'
 
 /**
  * The shape of a like object
