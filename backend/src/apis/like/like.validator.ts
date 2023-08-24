@@ -8,6 +8,6 @@ import {z} from 'zod'
  */
 export const LikeSchema = z.object({
     likeProfileId: z.string({required_error: 'please provide a valid likeProfileId'}).uuid({message: 'please provide a valid uuid for likeProfileId'}),
-    likeThreadId: z.string({required_error: 'please provide a valid likeThreadId'}).uuid({message: 'please provide a valid uuid for likeTweetId'}),
+    likeThreadId: z.string({required_error: 'please provide a valid likeThreadId'}).uuid({message: 'please provide a valid uuid for likeThreadId'}),
     likeDatetime: z.date({required_error: 'please provide a valid likeDatetime or null'}).nullable(),
 })
