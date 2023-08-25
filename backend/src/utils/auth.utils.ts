@@ -13,7 +13,7 @@ export function generateJwt (payload: object, signature: string): string {
 
   const iat = new Date().getTime()
   const exp = setExpInSecondsSinceEpoch(iat)
-  return sign({ exp, ...payload }, signature)
+  return sign({ exp, auth: payload }, signature)
 }
 
 export function setActivationToken (): string {
