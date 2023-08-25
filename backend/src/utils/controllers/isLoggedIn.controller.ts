@@ -13,8 +13,6 @@ export function isLoggedInController(request: Request, response: Response, next:
     //grab the signature off of the session
     const signature: string | undefined = request.session?.signature
 
-
-    console.log(signature)
     //grab the unparsed jwt token off of the request header
     const unverifiedJwtToken: string | undefined = request.headers?.authorization
 
@@ -28,7 +26,7 @@ export function isLoggedInController(request: Request, response: Response, next:
       return response.json(status)
     }
 
-    // verify that the jwt token from  the session is valid
+    // verify that the jwt token from the request is valid
     verify(unverifiedJwtToken, signature)
 
     //if the jwt token is verified without throwing an error  call the next controller
