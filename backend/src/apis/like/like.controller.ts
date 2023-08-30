@@ -7,7 +7,7 @@ import {
     selectLikesByLikeProfileId,
     selectLikesByLikeThreadId
 } from "./like.model";
-import {Profile} from "../profile/profile.model";
+import {PublicProfile} from "../profile/profile.model";
 import {Status} from "../../utils/interfaces/Status";
 
 /**
@@ -131,7 +131,7 @@ export async function postLikeController(request: Request, response: Response): 
         const {likeThreadId} = request.body
 
         // deconstruct the profile from the session
-        const profile = request.session.profile as Profile
+        const profile = request.session.profile as PublicProfile
 
         // deconstruct the profile id from the profile
         const likeProfileId = profile.profileId as string
@@ -175,7 +175,7 @@ export async function deleteLikeController(request: Request, response: Response)
         const {likeThreadId} = request.params
 
         // deconstruct the profile from the session
-        const profile = request.session.profile as Profile
+        const profile = request.session.profile as PublicProfile
 
         // deconstruct the profile id from the profile
         const likeProfileId = profile.profileId as string

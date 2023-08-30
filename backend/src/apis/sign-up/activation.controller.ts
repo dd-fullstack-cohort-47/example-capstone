@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
-import { Profile, updateProfile } from '../profile/profile.model'
+import {PrivateProfile, selectPrivateProfileByProfileActivationToken, updateProfile} from '../profile/profile.model'
 import { Status } from '../../utils/interfaces/Status'
-import {selectProfileByProfileActivationToken} from "./sign-up.model";
-import {zodErrorResponse} from "../../utils/response.utils";
-import {activationProfileSchema} from "./activation.validator";
+
+import { zodErrorResponse } from '../../utils/response.utils'
+import { activationProfileSchema } from './activation.validator'
+
 
 /**
  * Handles the logic for account activation by checking for an existing profileActivationToken and updating the profileActivationToken to null
@@ -12,9 +13,7 @@ import {activationProfileSchema} from "./activation.validator";
  * @param nextFunction not used in this case
  */
 export async function activationController (request: Request, response: Response, nextFunction: NextFunction): Promise<Response<Status>> {
-
   try {
-
     const validationResult = activationProfileSchema.safeParse(request.body)
     // if the validation is unsuccessful, return a preformatted response to the client
     if (!validationResult.success) {
@@ -25,7 +24,7 @@ export async function activationController (request: Request, response: Response
     const { activation } = request.params
 
     // select the profile by profileActivationToken
-    const profile = await selectProfileByProfileActivationToken(activation)
+    const profile  = await selectPrivateProfileByProfileActivationToken(activation)
 
     // if the profile is null, return a preformatted response to the client
     const activationFailed = (): Response => response.json({

@@ -7,12 +7,12 @@ import { Request, Response } from 'express'
  * @param response
  */
 export function signOutController (request: Request, response: Response): Response<Status> {
-    // deconstruct the session from the request
-    const { session } = request
-    // destroy the session
-    session?.destroy(() => {})
-    // create a status object to send back to the client
-    const status: Status = { status: 200, message: 'sign out successful', data: null }
-    // return the status
-    return response.json(status)
+  // deconstruct the session from the request
+  const { session } = request
+  // destroy the session
+  session?.destroy(() => {})
+  // create a status object to send back to the client
+  const status: Status = { status: 200, message: 'sign out successful', data: null }
+  // return the status
+  return response.json(status)
 }

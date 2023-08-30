@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import {signOutController} from "./sign-out.controller";
+import { signOutController } from './sign-out.controller'
 
 // declare a basePath for this router
 const basePath = '/apis/sign-out'

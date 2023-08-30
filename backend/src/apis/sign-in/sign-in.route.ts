@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import {signInController} from "./sign-in.controller";
+import { signInController } from './sign-in.controller'
 
 // declare a basePath for this router
 const basePath = '/apis/sign-in'

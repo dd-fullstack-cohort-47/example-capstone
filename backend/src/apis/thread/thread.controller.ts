@@ -8,7 +8,7 @@ import {
     Thread
 } from "./thread.model";
 import {Status} from "../../utils/interfaces/Status";
-import {Profile} from "../profile/profile.model";
+import {PublicProfile} from "../profile/profile.model";
 import {ThreadSchema} from "./thread.validator";
 import {zodErrorResponse} from "../../utils/response.utils";
 import {z} from "zod";
@@ -36,7 +36,7 @@ export async function postThreadController(request: Request, response: Response)
         const {threadContent, threadReplyThreadId, threadImageUrl} = request.body
 
         // get the profile from the session
-        const profile: Profile = request.session.profile as Profile
+        const profile: PublicProfile = request.session.profile as PublicProfile
 
         // set the thread profile id to the profile id from the session
         const threadProfileId: string = profile.profileId as string
@@ -249,7 +249,7 @@ export async function deleteThreadByThreadIdController (request: Request, respon
         }
 
         // get the profile from the session
-        const profile: Profile = request.session.profile as Profile
+        const profile: PublicProfile = request.session.profile as PublicProfile
 
         // set the thread profile id to the profile id from the session
         const threadProfileId: string = profile.profileId as string

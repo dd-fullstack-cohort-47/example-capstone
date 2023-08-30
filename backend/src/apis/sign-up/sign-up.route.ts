@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { signupProfileController } from './sign-up.controller'
-import {activationController} from "./activation.controller";
+import { activationController } from './activation.controller'
 
 // declare a basePath for this router
 const basePath = '/apis/sign-up'

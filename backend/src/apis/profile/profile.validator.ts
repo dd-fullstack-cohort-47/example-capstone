@@ -10,18 +10,47 @@ import { z } from 'zod'
  * @property profileImageUrl {string} the profile's image url
  * @property profileName {string} the profile's name
  */
-export const ProfileSchema = z.object({
-  profileId: z.string().uuid({ message: 'please provide a valid profileId' }),
-  profileAbout: z.string().max(512, { message: 'please provide a valid profileAbout' }).nullable(),
-  profileActivationToken: z.string().length(32, { message: 'please provide a valid profileActivationToken' }).nullable(),
-  profileEmail: z.string().email({ message: 'please provide a valid email' }).max(128, { message: 'please provide a valid email (max 128 characters)' }),
-  profileHash: z.string().length(97, { message: 'please provide a valid profileHash' }),
-  profileImageUrl: z.string().trim().url({ message: 'please provide a valid profileImageUrl' }).max(255, { message: 'please provide a valid profileImageUrl (max 255 characters)' }).nullable(),
-  profileName: z.string().min(1, { message: 'please provide a valid profile name (min 1 characters)' }).trim().max(32, { message: 'please provide a valid profile name (max 32 characters)' })
+export const PrivateProfileSchema = z.object({
+  profileId: z.string({
+    required_error: 'profileId is required',
+    invalid_type_error: 'Please provide a valid profileId'
+  })
+    .uuid({ message: 'please provide a valid profileId' }),
+  profileAbout: z.string({
+    required_error: 'profile about is a required field.',
+    invalid_type_error: 'please provide a valid profile about'
+  })
+    .max(512, { message: 'profile about length is to long' })
+    .nullable(),
+  profileActivationToken: z.string({
+    required_error: 'profileActivationToken is required',
+    invalid_type_error: 'please provide a valid profileActivationToken'
+  })
+    .length(32, { message: 'profile activation token is to long' })
+    .nullable(),
+  profileEmail: z.string({
+    required_error: 'profileEmail is required',
+    invalid_type_error: ' please provide a valid profileEmail'
+  })
+    .email({ message: 'please provide a valid email' })
+    .max(128, { message: 'profileEmail is to long' }),
+  profileHash: z.string({
+    required_error: 'profileHash is required',
+    invalid_type_error: 'please provide a valid profileHash'
+  })
+    .length(97, { message: 'profile hash must be 97 characters' }),
+  profileImageUrl: z.string({
+    required_error: 'profileImage is required',
+    invalid_type_error: 'please provide a valid profileImageUrl'
+  })
+    .trim()
+    .url({ message: 'please provide a valid profile image url' })
+    .max(255, { message: 'profile image url is to long' })
+    .nullable(),
+  profileName: z.string()
+    .trim()
+    .min(1, { message: 'please provide a valid profile name (min 1 characters)' })
+    .max(32, { message: 'please provide a valid profile name (max 32 characters)' })
 })
 
-/**
- * The shape of a profile id
- * @property profileId {string} the primary key
- */
-export const ProfileIdSchema = ProfileSchema.pick({ profileId: true })
+export const PublicProfileSchema = PrivateProfileSchema.omit({profileHash: true, profileActivationToken: true})

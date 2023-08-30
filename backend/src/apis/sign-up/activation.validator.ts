@@ -5,4 +5,4 @@ import { z } from 'zod'
  * @property profileActivationToken {string} the profile's activation token
  */
 
-export const activationProfileSchema = z.object ({  activation: z.string().length(32, { message: 'please provide a valid profileActivationToken' })})
+export const activationProfileSchema = z.object({ activation: z.string().length(32, { message: 'please provide a valid profileActivationToken' }) })
