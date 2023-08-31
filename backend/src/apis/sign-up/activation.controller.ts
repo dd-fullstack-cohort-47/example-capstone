@@ -1,9 +1,9 @@
-import {  Request, Response } from 'express'
-import {PrivateProfile, selectPrivateProfileByProfileActivationToken, updateProfile} from '../profile/profile.model'
-import { Status } from '../../utils/interfaces/Status'
+import {NextFunction, Request, Response} from 'express'
+import { selectPrivateProfileByProfileActivationToken, updateProfile} from '../profile/profile.model'
+import {Status} from '../../utils/interfaces/Status'
 
-import { zodErrorResponse } from '../../utils/response.utils'
-import { activationProfileSchema } from './activation.validator'
+import {zodErrorResponse} from '../../utils/response.utils'
+import {activationProfileSchema} from './activation.validator'
 
 
 /**
@@ -11,43 +11,39 @@ import { activationProfileSchema } from './activation.validator'
  * @param request {Request} the request object containing the profileActivationToken
  * @param response {Response} the response object containing the status and message
  */
-export async function activationController (request: Request, response: Response): Promise<Response<Status>> {
-  try {
-    const validationResult = activationProfileSchema.safeParse(request.body)
-    // if the validation is unsuccessful, return a preformatted response to the client
-    if (!validationResult.success) {
-      return zodErrorResponse(response, validationResult.error)
+export async function activationController(request: Request, response: Response, ): Promise<Response<Status>> {
+    try {
+        const validationResult = activationProfileSchema.safeParse(request.params)
+        // if the validation is unsuccessful, return a preformatted response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // deconstruct the profileActivationToken from the request body
+        const {activation} = validationResult.data
+
+        // select the profile by profileActivationToken
+        const profile = await selectPrivateProfileByProfileActivationToken(activation)
+
+        // if the profile is null, return a preformatted response to the client
+        if (profile === null) {
+            return response.json({
+                status: 400,
+                data: null,
+                message: 'Account activation has failed. Have you already activated this account?'
+            })
+        }
+        // if the profile is not null, update the profileActivationToken to null and send a success response
+        profile.profileActivationToken = null
+        await updateProfile(profile)
+        return response.json({
+            status: 200,
+            data: null,
+            message: 'Account activation was successful'
+        })
+
+    } catch (error: any) {
+        // catch any errors and return them to the client
+        return response.json({status: 500, data: null, message: error.message})
     }
-
-    // deconstruct the profileActivationToken from the request body
-    const { activation } = validationResult.data
-
-    // select the profile by profileActivationToken
-    const profile  = await selectPrivateProfileByProfileActivationToken(activation)
-
-    // if the profile is null, return a preformatted response to the client
-    const activationFailed = (): Response => response.json({
-      status: 400,
-      data: null,
-      message: 'Account activation has failed. Have you already activated this account'
-    })
-
-    // if the profile is not null, update the profileActivationToken to null and prepare success response
-    const activationSucceeded = async (profile: PrivateProfile): Promise<Response> => {
-      const updatedProfile = { ...profile, profileActivationToken: null }
-      await updateProfile(updatedProfile)
-      return response.json({
-        status: 200,
-        data: null,
-        message: 'Account activation was successful'
-      })
-    }
-
-    // return the appropriate response
-    return (profile != null) ? await activationSucceeded(profile) : activationFailed()
-
-    // catch any errors and return them to the client
-  } catch (error: any) {
-    return response.json({ status: 500, data: null, message: error.message })
-  }
 }
