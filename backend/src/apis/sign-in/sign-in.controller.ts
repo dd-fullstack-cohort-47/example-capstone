@@ -1,4 +1,4 @@
-import {PrivateProfile, PublicProfile, selectPrivateProfileByProfileEmail} from '../profile/profile.model'
+import {PrivateProfile, selectPrivateProfileByProfileEmail} from '../profile/profile.model'
 import { generateJwt, validatePassword } from '../../utils/auth.utils'
 import { Request, Response } from 'express'
 import { signInProfileSchema } from './sign-in.validator'
@@ -26,7 +26,7 @@ export async function signInController (request: Request, response: Response): P
     }
 
     // deconstruct the profileEmail and profilePassword from the request body
-    const { profileEmail, profilePassword } = request.body
+    const { profileEmail, profilePassword } = validationResult.data
 
     // select the profile by the profileEmail from the database
     const profile: PrivateProfile | null = await selectPrivateProfileByProfileEmail(profileEmail)
@@ -39,7 +39,7 @@ export async function signInController (request: Request, response: Response): P
     }
 
     //check if the password matches the hash
-    const isPasswordValid = await validatePassword(profilePassword, profile.profileHash)
+    const isPasswordValid = await validatePassword( profile.profileHash, profilePassword,)
     // check for failed sign in
     // if sign in failed, return a response to the client
 
@@ -49,7 +49,7 @@ export async function signInController (request: Request, response: Response): P
 
     // if sign in was successful, create a new session for the client and return a response to the client
     // deconstruct the profileId, profileAbout, profileImageUrl and profileName from the profile
-    const { profileId, profileAbout, profileImageUrl, profileName } : PublicProfile = profile
+    const { profileId, profileAbout, profileImageUrl, profileName} = profile
 
     // generate a new signature for the session
     const signature: string = uuid()
@@ -58,7 +58,6 @@ export async function signInController (request: Request, response: Response): P
     const authorization: string = generateJwt({
       profileId,
       profileAbout,
-      profileEmail,
       profileImageUrl,
       profileName
     }, signature)
@@ -76,7 +75,7 @@ export async function signInController (request: Request, response: Response): P
     // return a response to the client
     return response.json({ status: 200, message: 'Sign in successful', data: null })
 
-    // catch any errors that occurred during the sign in process and return a response to the client
+    // catch any errors that occurred during the sign-in process and return a response to the client
   } catch (error: any) {
     return response.json({ status: 500, data: null, message: error.message })
   }

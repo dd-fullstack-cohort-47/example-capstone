@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {
-    getPublicProfileByProfileIdController,
+    getPublicProfileByProfileIdController, getPublicProfileByProfileNameController,
     getPublicProfilesByProfileNameController,
     putProfileController
 } from "./profile.controller";
@@ -19,7 +19,7 @@ router.route('/profileNames/:profileName')
     .get(getPublicProfilesByProfileNameController)
 
 router.route('/profileName/:profileName')
-    .get(getPublicProfilesByProfileNameController)
+    .get(getPublicProfileByProfileNameController)
 
 export const profileRoute = {basePath, router}
 

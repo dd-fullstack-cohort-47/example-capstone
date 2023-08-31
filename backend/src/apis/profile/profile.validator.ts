@@ -43,4 +43,4 @@ export const PrivateProfileSchema = z.object({
     .max(32, { message: 'please provide a valid profile name (max 32 characters)' })
 })
 
-export const PublicProfileSchema = PrivateProfileSchema.omit({profileHash: true, profileActivationToken: true})
+export const PublicProfileSchema = PrivateProfileSchema.omit({profileHash: true, profileActivationToken: true, profileEmail: true})
