@@ -92,7 +92,7 @@ export async function selectPrivateProfileByProfileId(profileId: string): Promis
 /**
  * selects the publicProfile from the profile table by profileName
  * @param profileName the profile's name to search for in the profile table
- * @returns Profile or null if no profile was found
+ * @returns {PublicProfile | null} if no profile was found
  */
 export async function selectPublicProfileByProfileName(profileName: string): Promise<PublicProfile | null> {
 
@@ -112,7 +112,7 @@ export async function selectPublicProfileByProfileName(profileName: string): Pro
  * @returns an array of profiles
  **/
 
-export async function selectProfilesByProfileName(profileName: string): Promise<PublicProfile[]> {
+export async function selectPublicProfilesByProfileName(profileName: string): Promise<PublicProfile[]> {
 
   // format profileName to include wildcards
   const profileNameWithWildcards = `%${profileName}%`
@@ -130,6 +130,8 @@ export async function selectProfilesByProfileName(profileName: string): Promise<
  * @returns "profile successfully created"
  */
 export async function insertProfile (profile: PrivateProfile): Promise<string> {
+
+  //
   const { profileAbout, profileActivationToken, profileEmail, profileHash, profileImageUrl, profileName } = profile
   await sql`INSERT INTO profile(profile_id, profile_about, profile_activation_token, profile_email, profile_hash, profile_image_url, profile_name) VALUES (gen_random_uuid() , ${profileAbout}, ${profileActivationToken}, ${profileEmail}, ${profileHash}, ${profileImageUrl}, ${profileName})`
   return 'Profile Successfully Created'

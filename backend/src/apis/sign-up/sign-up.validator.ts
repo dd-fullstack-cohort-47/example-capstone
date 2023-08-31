@@ -1,12 +1,12 @@
 import { z } from 'zod'
-import { ProfileSchema } from '../profile/profile.validator'
+import {PrivateProfileSchema} from '../profile/profile.validator'
 
 /**
  * The shape of the data that comes from the client when signing up
  * @property profilePasswordConfirm {string} the password confirmation
  * @property profilePassword {string} the password
  */
-export const SignUpProfileSchema = ProfileSchema
+export const SignUpProfileSchema = PrivateProfileSchema
   .omit({ profileId: true, profileHash: true, profileActivationToken: true, profileImageUrl: true, profileAbout: true })
   .extend({
     profilePasswordConfirm: z.string()

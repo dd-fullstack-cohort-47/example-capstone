@@ -1,15 +1,5 @@
 import { z } from 'zod'
 
-/**
- * The shape of a profile
- * @property profileId {string} the primary key
- * @property profileAbout {string} the profile's about
- * @property profileActivationToken {string} the profile's activation token
- * @property profileEmail {string} the profile's email
- * @property profileHash {string} the profile's hash
- * @property profileImageUrl {string} the profile's image url
- * @property profileName {string} the profile's name
- */
 export const PrivateProfileSchema = z.object({
   profileId: z.string({
     required_error: 'profileId is required',

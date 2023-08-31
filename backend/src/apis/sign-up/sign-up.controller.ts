@@ -3,8 +3,7 @@ import { Status } from '../../utils/interfaces/Status'
 import formData from 'form-data'
 import Mailgun from 'mailgun.js'
 import { setActivationToken, setHash } from '../../utils/auth.utils'
-import { insertProfile } from './sign-up.model'
-import { Profile } from '../profile/profile.model'
+import { PrivateProfile, insertProfile } from '../profile/profile.model'
 import { SignUpProfileSchema } from './sign-up.validator'
 import { zodErrorResponse } from '../../utils/response.utils'
 
@@ -56,7 +55,7 @@ export async function signupProfileController (request: Request, response: Respo
       html: message
     }
     // create a new profile object
-    const profile: Profile = {
+    const profile: PrivateProfile = {
       profileId: '',
       profileAbout: null,
       profileActivationToken,

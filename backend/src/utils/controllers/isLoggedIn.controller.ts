@@ -1,14 +1,15 @@
 import {NextFunction, Request, Response} from 'express'
 import {verify} from 'jsonwebtoken'
 import {Status} from '../interfaces/Status'
-import {Profile} from "../../apis/profile/profile.model";
+import {PublicProfile} from "../../apis/profile/profile.model";
+
 
 export function isLoggedInController(request: Request, response: Response, next: NextFunction): Response | void {
   //set a predefined response if the user is not logged in
   const status: Status = {status: 401, message: 'Please login', data: null}
   try {
     // grab the profile off of the session
-    const profile: Profile | undefined = request.session?.profile
+    const profile: PublicProfile | undefined = request.session?.profile
 
     //grab the signature off of the session
     const signature: string | undefined = request.session?.signature
@@ -32,8 +33,6 @@ export function isLoggedInController(request: Request, response: Response, next:
     //if the jwt token is verified without throwing an error  call the next controller
     return next()
   } catch (error: unknown) {
-
-
     // if an error is thrown return the predefined status
     return response.json(status)
 
