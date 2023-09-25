@@ -7,6 +7,9 @@ import {
     selectFollowsByFollowProfileId
 } from "./follow.model";
 import {Status} from "../../utils/interfaces/Status";
+import {ThreadSchema} from "../thread/thread.validator";
+import {zodErrorResponse} from "../../utils/response.utils";
+import {FollowSchema} from "./follow.validator";
 
 
 /**
@@ -73,8 +76,21 @@ export async function getFollowsByFollowFollowingProfileIdController(request: Re
  */
 export async function postFollowController (request: Request, response: Response): Promise<Response> {
     try {
-        const {followProfileId, followFollowingProfileId} = request.body
+
+        // validate the incoming request with the follow schema
+        const validationResult = FollowSchema.safeParse(request.body)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue on with postFollowController logic below this line
+
+        // deconstruct the follow profile id and the follow following profile id from the request body
+        const {followProfileId, followFollowingProfileId} = validationResult.data
         const result = await insertFollow({followProfileId, followFollowingProfileId})
+
         return response.json({status: 200, message: null, data: result})
     } catch (error) {
         return response.json({status: 500, message: 'Posting the follow failed. Please try again.', data: null})
