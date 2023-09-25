@@ -7,9 +7,9 @@ import {
     selectFollowsByFollowProfileId
 } from "./follow.model";
 import {Status} from "../../utils/interfaces/Status";
-import {ThreadSchema} from "../thread/thread.validator";
 import {zodErrorResponse} from "../../utils/response.utils";
 import {FollowSchema} from "./follow.validator";
+import {z} from "zod";
 
 
 /**
@@ -21,8 +21,18 @@ import {FollowSchema} from "./follow.validator";
 export async function getFollowsByFollowProfileIdController(request: Request, response: Response): Promise<Response> {
     try {
 
+        // validate the followProfileId coming from the request parameters
+        const validationResult = z.string().uuid("Please provide a valid followProfileId").safeParse(request.params.followProfileId)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
         // deconstruct the follow profile id from the request parameters
-        const {followProfileId} = request.params
+        const followProfileId = validationResult.data
 
         // select the follows by follow profile id
         const data = await selectFollowsByFollowProfileId(followProfileId)
@@ -49,8 +59,18 @@ export async function getFollowsByFollowProfileIdController(request: Request, re
 export async function getFollowsByFollowFollowingProfileIdController(request: Request, response: Response): Promise<Response> {
     try {
 
+        // validate the followProfileId coming from the request parameters
+        const validationResult = z.string().uuid("Please provide a valid followFollowingProfileId").safeParse(request.params.followFollowingProfileId)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
         // deconstruct the follow following profile id from the request parameters
-        const {followFollowingProfileId} = request.params
+        const followFollowingProfileId = validationResult.data
 
         // select the follows by follow following profile id
         const data = await selectFollowsByFollowFollowingProfileId(followFollowingProfileId)
