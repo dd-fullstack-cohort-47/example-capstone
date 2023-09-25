@@ -3,7 +3,10 @@ import {
     deleteThreadByThreadIdController,
     getAllReplyThreadsByThreadIdController,
     getAllThreads,
-    getPageOfThreadsController, getThreadByThreadIdController,
+    getPageOfThreadsController,
+    getThreadByThreadIdController,
+    getThreadsByProfileNameController,
+    getThreadsByThreadProfileIdController,
     postThreadController
 } from "./thread.controller";
 import {isLoggedInController} from "../../utils/controllers/isLoggedIn.controller";
@@ -22,6 +25,10 @@ router.route('/')
 router.route('/replies/threadId/:threadId').get(getAllReplyThreadsByThreadIdController)
 
 router.route('/page/:page').get(getPageOfThreadsController)
+
+router.route('/profileName/:profileName').get(getThreadsByProfileNameController)
+
+router.route('/threadProfileId/:threadProfileId').get(getThreadsByThreadProfileIdController)
 
 router.route('/:threadId')
     .get(getThreadByThreadIdController)

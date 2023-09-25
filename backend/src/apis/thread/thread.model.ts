@@ -54,10 +54,26 @@ export async function selectAllThreads(): Promise<Thread[]> {
 }
 
 /**
- * gets all threads from the thread table in the database by threadProfileId and returns them
- * @param threadProfileId {string} the thread's profile id to search for in the thread table
- * @returns <Thread[]> the threads that have the threadProfileId
+ * gets all threads from the thread table in the database by profileName and returns them
+ * @param profileName {string} the thread's profile name to search for in the thread table
+ * @returns <Thread[]> the threads that have the profileName
  */
+export async function selectThreadsByProfileName(profileName: string): Promise<Thread[]> {
+    // get all threads from the thread table in the database by profileName and return them
+    const rowList = <Thread[]>await sql`SELECT thread_id,
+                                      thread_profile_id,
+                                      thread_reply_thread_id,
+                                      thread_content,
+                                      thread_datetime,
+                                      thread_image_url
+                               FROM thread JOIN profile ON thread.thread_profile_id = profile.profile_id
+                               WHERE profile.profile_name = ${profileName}
+                               AND thread_reply_thread_id IS NULL`
+
+    // parse the threads from the database into an array of Thread objects
+    return ThreadSchema.array().parse(rowList)
+}
+
 export async function selectThreadsByThreadProfileId(threadProfileId: string): Promise<Thread[]> {
     // get all threads from the thread table in the database by threadProfileId and return them
     const rowList = <Thread[]>await sql`SELECT thread_id,

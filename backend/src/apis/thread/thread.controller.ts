@@ -3,7 +3,7 @@ import {
     deleteThreadByThreadId,
     insertThread, selectAllReplyThreadsByThreadId,
     selectAllThreads, selectPageOfThreads,
-    selectThreadByThreadId,
+    selectThreadByThreadId, selectThreadsByProfileName,
     selectThreadsByThreadProfileId,
     Thread
 } from "./thread.model";
@@ -12,6 +12,7 @@ import {PublicProfile} from "../profile/profile.model";
 import {ThreadSchema} from "./thread.validator";
 import {zodErrorResponse} from "../../utils/response.utils";
 import {z} from "zod";
+import {PublicProfileSchema} from "../profile/profile.validator";
 
 
 /**
@@ -96,7 +97,7 @@ export async function getAllThreads (request: Request, response: Response): Prom
  * @param request from the client to the server to get all threads by thread profile id
  * @param response from the server to the client with all threads by thread profile id or an error message
  */
-export async function getThreadByThreadProfileIdController (request: Request, response: Response): Promise<Response<Status>> {
+export async function getThreadsByThreadProfileIdController (request: Request, response: Response): Promise<Response<Status>> {
     try {
 
         // validate the incoming request threadProfileId with the uuid schema
@@ -112,6 +113,41 @@ export async function getThreadByThreadProfileIdController (request: Request, re
 
         // get the threads from the database by thread profile id and store it in a variable called data
         const data = await selectThreadsByThreadProfileId(threadProfileId)
+
+        // return the response with the status code 200, a message, and the threads as data
+        return response.json({status: 200, message: null, data})
+
+        // if there is an error, return the response with the status code 500, an error message, and null data
+    } catch (error) {
+        return response.json({
+            status: 500,
+            message: '',
+            data: []
+        })
+    }
+}
+
+/**
+ * gets all threads from the database by thread profile id and returns them to the user in the response
+ * @param request from the client to the server to get all threads by thread profile id
+ * @param response from the server to the client with all threads by thread profile id or an error message
+ */
+export async function getThreadsByProfileNameController (request: Request, response: Response): Promise<Response<Status>> {
+    try {
+
+        // validate the incoming request threadProfileId with the uuid schema
+        const validationResult = PublicProfileSchema.pick({profileName: true}).safeParse(request.params.profileName)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // get the thread profile id from the request parameters
+        const {profileName} = validationResult.data
+
+        // get the threads from the database by thread profile id and store it in a variable called data
+        const data = await selectThreadsByProfileName(profileName)
 
         // return the response with the status code 200, a message, and the threads as data
         return response.json({status: 200, message: null, data})
