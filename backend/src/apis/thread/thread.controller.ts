@@ -108,7 +108,7 @@ export async function getThreadByThreadProfileIdController (request: Request, re
         }
 
         // get the thread profile id from the request parameters
-        const {threadProfileId} = request.params
+        const threadProfileId = validationResult.data
 
         // get the threads from the database by thread profile id and store it in a variable called data
         const data = await selectThreadsByThreadProfileId(threadProfileId)
@@ -143,7 +143,7 @@ export async function getThreadByThreadIdController (request: Request, response:
         }
 
         // get the thread id from the request parameters
-        const {threadId} = request.params
+        const threadId = validationResult.data
 
         // get the thread from the database by thread id and store it in a variable called data
         const data = await selectThreadByThreadId(threadId)
@@ -178,7 +178,7 @@ export async function getAllReplyThreadsByThreadIdController (request: Request, 
         }
 
         // get the thread id from the request parameters
-        const {threadId} = request.params
+        const threadId = validationResult.data
 
 
         const data = await selectAllReplyThreadsByThreadId(threadId)
@@ -214,7 +214,7 @@ export async function getPageOfThreadsController(request: Request, response: Res
         }
 
         // get the page number from the request parameters
-        const {page} = request.params
+        const page = validationResult.data
 
         // get the threads from the database by page number and store it in a variable called data
         const data = await selectPageOfThreads(Number(page))
@@ -255,7 +255,7 @@ export async function deleteThreadByThreadIdController (request: Request, respon
         const threadProfileId: string = profile.profileId as string
 
         // get the thread id from the request parameters
-        const {threadId} = request.params
+        const threadId = validationResult.data
 
         // get the thread from the database by thread id
         const thread = await selectThreadByThreadId(threadId)
