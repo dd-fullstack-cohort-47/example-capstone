@@ -9,6 +9,9 @@ import {
 } from "./like.model";
 import {PublicProfile} from "../profile/profile.model";
 import {Status} from "../../utils/interfaces/Status";
+import {LikeSchema} from "./like.validator";
+import {zodErrorResponse} from "../../utils/response.utils";
+import {z} from "zod";
 
 /**
  * Handles GET request for all likes associated with a thread
@@ -18,8 +21,18 @@ import {Status} from "../../utils/interfaces/Status";
 export async function getLikesByLikeThreadIdController(request: Request, response: Response): Promise<Response> {
     try {
 
+        // validate the likeProfileId coming from the request parameters
+        const validationResult = z.string().uuid("Please provide a valid likeThreadId").safeParse(request.params.likeThreadId)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
         // deconstruct the like thread id from the request parameters
-        const {likeThreadId} = request.params
+        const likeThreadId = validationResult.data
 
         // select the likes by like thread id
         const data = await selectLikesByLikeThreadId(likeThreadId)
@@ -46,8 +59,18 @@ export async function getLikesByLikeThreadIdController(request: Request, respons
 export async function getLikesByLikeProfileIdController(request: Request, response: Response): Promise<Response> {
     try {
 
-        // deconstruct the like thread id from the request parameters
-        const {likeProfileId} = request.params
+        // validate the likeProfileId coming from the request parameters
+        const validationResult = z.string().uuid("Please provide a valid likeProfileId").safeParse(request.params.likeProfileId)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
+        // deconstruct the like Profile id from the request parameters
+        const likeProfileId = validationResult.data
 
         // select the likes by like profile id
         const data = await selectLikesByLikeProfileId(likeProfileId)
@@ -71,11 +94,21 @@ export async function getLikesByLikeProfileIdController(request: Request, respon
  * @param response object containing the status of the request
  * @returns status object indicating whether the like was inserted or deleted
  */
-export async function toggleLikeController(request: Request, response: Response): Promise<Response<string>> {
+export async function toggleLikeController(request: Request, response: Response): Promise<Response<Status>> {
     try {
 
-        // deconstruct the like thread id from the request body
-        const {likeThreadId} = request.body
+        // validate the incoming request with the like schema
+        const validationResult = LikeSchema.safeParse(request.body)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
+        // deconstruct the like thread id from the validation result
+        const {likeThreadId} = validationResult.data
 
         // deconstruct the profile from the session
         const profile = request.session.profile
@@ -124,11 +157,21 @@ export async function toggleLikeController(request: Request, response: Response)
  * @param response object containing the status of the request
  * @returns status object indicating if the like was inserted
  */
-export async function postLikeController(request: Request, response: Response): Promise<Response<string>> {
+export async function postLikeController(request: Request, response: Response): Promise<Response<Status>> {
     try {
 
-        // deconstruct the like thread id from the request body
-        const {likeThreadId} = request.body
+        // validate the incoming request with the like schema
+        const validationResult = LikeSchema.safeParse(request.body)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
+        // deconstruct the like thread id from the validation result
+        const {likeThreadId} = validationResult.data
 
         // deconstruct the profile from the session
         const profile = request.session.profile as PublicProfile
@@ -168,11 +211,21 @@ export async function postLikeController(request: Request, response: Response): 
  * @param response object containing the status of the request
  * @returns status object indicating if the like was deleted
  */
-export async function deleteLikeController(request: Request, response: Response): Promise<Response<string>> {
+export async function deleteLikeController(request: Request, response: Response): Promise<Response<Status>> {
     try {
 
-        // deconstruct the like thread id from the request parameters
-        const {likeThreadId} = request.params
+        // validate the incoming request with the like schema
+        const validationResult = LikeSchema.safeParse(request.body)
+
+        // if the validation fails, return a response to the client
+        if (!validationResult.success) {
+            return zodErrorResponse(response, validationResult.error)
+        }
+
+        // if the validation succeeds, continue
+
+        // deconstruct the like thread id from the validation result
+        const {likeThreadId} = validationResult.data
 
         // deconstruct the profile from the session
         const profile = request.session.profile as PublicProfile
