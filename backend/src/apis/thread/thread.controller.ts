@@ -33,7 +33,7 @@ export async function postThreadController(request: Request, response: Response)
         // if the validation succeeds, continue on with postThreadController logic below this line
 
         // get the thread content, thread reply thread id, and thread image url from the request body
-        const {threadContent, threadReplyThreadId, threadImageUrl} = request.body
+        const {threadContent, threadReplyThreadId, threadImageUrl} = validationResult.data
 
         // get the profile from the session
         const profile: PublicProfile = request.session.profile as PublicProfile
