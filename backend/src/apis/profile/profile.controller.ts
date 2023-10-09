@@ -48,7 +48,7 @@ export async function getPublicProfileByProfileIdController(request: Request, re
 /**
  * Express controller for getting the public profile by profileEmail
  * `
- * @param request from the client to the server to get all threads by thread profile id
+ * @param request from the client to the server to get all  by thread profile id
  * @param response from the server to the client with all threads by thread profile id or an error message
  * @return {Promise<Response<Status>>}  A promise containing the response for the client with the requested information,
  * or null if the information could not be found, set to the data field.
