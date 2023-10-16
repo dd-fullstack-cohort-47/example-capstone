@@ -70,3 +70,21 @@ export async function selectTagByTagKeywordIdAndTagThreadId(tagKeywordId: string
     // return the tag or null if no tag was found
     return result?.length === 1 ? result[0] : null
 }
+
+
+/**
+ * deletes a tag by tagKeywordId and tagThreadId from the tag table
+ * @param tagKeywordId the keyword id to search for in the tag table
+ * @param tagThreadId the thread id to search for in the tag table
+ * @returns {Promise<string>} a message indicating success
+ *
+ */
+
+export async function deleteTagByTagKeywordIdAndTagThreadId(tagKeywordId: string, tagThreadId: string): Promise<string> {
+
+    // prepare a statement to delete the tag by tagKeywordId and tagThreadId and execute the statement
+    await sql`DELETE FROM tag WHERE tag_keyword_id = ${tagKeywordId} AND tag_thread_id = ${tagThreadId}`
+
+    // return a message to the user indicating success
+    return 'Tag successfully deleted'
+}
