@@ -192,7 +192,7 @@ export async function deleteTagController(request: Request, response: Response):
         await deleteTagByTagKeywordIdAndTagThreadId(tagKeywordId, tagThreadId)
 
         // create a preformatted response to send to the client
-        const status: Status = {status: 200, data, message: "Tag successfully deleted"}
+        const status: Status = {status: 200, data: null, message: "Tag successfully deleted"}
 
         // return the result to the client
         return response.json(status)
