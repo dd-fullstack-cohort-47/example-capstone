@@ -8,12 +8,13 @@ const config: Config = {
   ],
   theme: {},
   plugins: [
-    require('@tailwindcss/typography'),
+
     require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
     require('daisyui')
   ],
     daisyui: {
-    themes: ["retro"],
+    themes: ["dracula"],
     }
 }
 

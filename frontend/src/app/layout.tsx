@@ -15,7 +15,7 @@ type RootLayoutProps = {
 export default function RootLayout(props : RootLayoutProps) {
     const { children } = props
   return (
-    <html data-theme="retro" lang="en">
+    <html data-theme="dracula" lang="en">
       <body>{children}</body>
     </html>
   )
