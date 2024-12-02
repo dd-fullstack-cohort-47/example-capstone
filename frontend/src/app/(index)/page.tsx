@@ -1,17 +1,16 @@
-import React from "react";
-import {ThreadCard} from "@/components/thread-card";
+"use server"
+;
+import {Suspense} from "react";
+import {ThreadCard} from "@/components/ThreadCard";
 
-export default function Home() {
-
-
+export default async function () {
 	return (
 		<>
-
-			<main className="container grid mx-auto">
+			<main className="container lg:w-2/3 grid mx-auto">
 				<div className="col-span-full p-0 border border-base-content">
-					<h1 className="text-3x p-4 font-bold">Welcome Sign In User</h1>
-					<form>
-						<div className="w-full border-y border-gray-200">
+					<h1 className="text-3x p-4 font-bold">Welcome User!</h1>
+					<form >
+						<div className="w-full border border-gray-200">
 							<div className="px-4 py-2 bg-white dark:bg-gray-800">
 								<label htmlFor="comment" className="sr-only">Your Post</label>
 								<textarea
@@ -46,11 +45,12 @@ export default function Home() {
 					<ThreadCard />
 					<ThreadCard />
 					<ThreadCard />
+					<ThreadCard />
+					<ThreadCard />
+
+
 				</div>
 			</main>
-
-
 		</>
-
 	)
 }

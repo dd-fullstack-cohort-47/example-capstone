@@ -5,8 +5,9 @@ import React from "react";
 
 import {Signika as FontSans} from 'next/font/google';
 import {cn} from "@/utils/tailwind.utils";
+import {SidebarProvider} from "@/utils/context/sidebar.context";
 import {theme} from "@/utils/theme.utils";
-
+import {LayoutContent} from "@/app/LayoutContent";
 
 
 
@@ -34,7 +35,7 @@ export default function RootLayout(props : RootLayoutProps) {
 		<head>
 
 
-			<link href="/next.svg" rel="icon" type="image/x-icon"/>
+			<link href="/frontend/public/favicon.svg" rel="icon" type="image/x-icon"/>
 			<ThemeModeScript/>
 		</head>
 		<body className={cn("min-h-dvh bg-background font-sans antialiased bg-gray-50 text-stone-800 dark:bg-gray-800 dark:text-slate-200", fontSans.variable)} >
@@ -46,3 +47,4 @@ export default function RootLayout(props : RootLayoutProps) {
 		</html>
 	)
 }
+

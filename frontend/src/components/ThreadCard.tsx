@@ -1,26 +1,22 @@
 
-
-
-
-
 export async function ThreadCard() {
 	return (
-		<article className="p-6 border-b border-gray-200 text-base">
+		<article className="p-6 border border-gray-200 text-base">
 			<header className="flex justify-between items-center mb-2">
 				<div className="flex items-center">
 					<p className="inline-flex items-center mr-3 text-sm font-semibold">
 						<img
-							className="mr-2 w-8 h-8 rounded-full"
-							src={'/profile.png'}
-						/>Face Palming Marty</p>
+						className="mr-2 w-8 h-8 rounded-full"
+						src={'/profile.png'}
+					/>User of the names</p>
 					<p className="text-sm ">
-						<time dateTime={"2021-09-12T12:00:00Z"}
-						      title={'2021-09-12T12:00:00Z'}>
+						<time dateTime="2022-02-08"
+						      title="February 8th, 2022">February 8th, 2022
 						</time>
 					</p>
 				</div>
 			</header>
-			<p className="">Captain Picard’s wisdom and courage inspire fans across generations. A leader who values diplomacy, integrity, and exploration. Make it so! #StarTrek</p>
+			<p className="">Listen to your sister, Morty. To live is to risk it all, otherwise you’re just an inert chunk of randomly assembled molecules drifting wherever the universe blows you</p>
 			<div className="flex items-center mt-4 space-x-4">
 				<button type="button"
 				        className="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium">

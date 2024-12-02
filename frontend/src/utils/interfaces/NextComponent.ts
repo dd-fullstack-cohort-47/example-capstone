@@ -1,4 +1,3 @@
-
 import React from "react";
 
 export type LayoutProps = {
@@ -13,4 +12,5 @@ export type PageProps<T = DefaultParams> = {
 	params: T;
 	searchParams: { [key: string]: string | string[] | undefined };
 };
+
 
