@@ -6,48 +6,43 @@ import {ProfileSchema} from "@/utils/models/profile/profile.model";
 import {z} from "zod";
 import {DevTool} from "@hookform/devtools";
 import {DisplayError} from "@/components/DisplayError";
-import {createProfile} from "@/utils/models/profile/profile.action";
+
+import {SignUp, SignUpSchema} from "@/utils/models/sign-up/sign-up.model";
+import {preformSignUp} from "@/utils/models/sign-up/sign-up.action";
+import {Status} from "@/utils/interfaces/Status";
+import {DisplayStatus} from "@/components/DisplayStatus";
 
 export function SignUpForm() {
 
-	const [status, setStatus] = React.useState({type: 'failure', message: 'An unknown error occurred'})
+	// create a state variable to hold the status of the form
+	const [status, setStatus] = React.useState<Status | null>(null)
 
-	const formValidation = ProfileSchema.pick({profileName: true}).extend({
-		profileEmail: z.string()
-			.email({message: 'please provide a valid email'})
-			.max(128, {message: 'profileEmail is to long'}),
-		profilePasswordConfirm: z.string()
-			.min(8, {message: 'please provide a valid password (min 8 characters)'})
-			.max(32, {message: 'please provide a valid password (max 32 characters)'}),
-		profilePassword: z.string()
-			.min(8, {message: 'please provide a valid password (min 8 characters)'})
-			.max(32, {message: 'please provide a valid password (max 32 characters)'})
-	})
-		.refine(data => data.profilePassword === data.profilePasswordConfirm, {
-			message: 'passwords do not match'
-		})
-
-	type FormValidation = z.infer<typeof formValidation>
-
-	const defaultValues: FormValidation = {
+	// create a default value for the form to hold the data created in the form
+	const defaultValues: SignUp = {
 		profileName: '',
 		profileEmail: '',
 		profilePassword: '',
 		profilePasswordConfirm: ''
 	}
 
-	const {register, handleSubmit, control, formState: {errors}} = useForm<FormValidation>({
-		resolver: zodResolver(formValidation),
-		defaultValues, mode: 'onBlur'
+	// register the form with react-hook-form
+	const {register, handleSubmit, control, reset, formState: {errors}} = useForm<SignUp>({
+		resolver: zodResolver(SignUpSchema),
+		defaultValues,
+		mode: 'onBlur'
 	})
 
 
-	const onSubmit = async (data: FormValidation) => {
+	//define the function to handle the form submission
+	const onSubmit = async (data: SignUp) => {
 		try {
-			const response = await  createProfile(data)
-			console.log(response)
-
+			const response = await  preformSignUp(data)
+			if (response.status === 200) {
+				reset()
+			}
+			setStatus(response)
 		} catch (error) {
+			setStatus({status: 500, message: 'Internal Server Error try again later', data: undefined})
 			console.error(error)
 
 		}
@@ -55,13 +50,16 @@ export function SignUpForm() {
 
 	return (
 		<>
+			{/*call React hooks forms handle submit and pass it our function for form submission*/}
 			<form onSubmit={handleSubmit(onSubmit)} className="flex min-h-auto gap-4 min-w-full flex-col grow">
 				<h1 className="text-3xl font-bold">Create an account.</h1>
 				<div>
 					<div className="mb-2 block">
 						<Label htmlFor="email1" value="email"/>
 					</div>
+					{/*tie the individual input field to a field in the default values*/}
 					<TextInput aria-invalid={errors.profileEmail ? true: false} {...register('profileEmail')} autoComplete='email' id="email1" type="email"/>
+					{/*display the error message if the field has an error*/}
 					<DisplayError error={errors.profileEmail?.message}/>
 				</div>
 				<div>
@@ -87,6 +85,7 @@ export function SignUpForm() {
 				</div>
 				<Button type="submit">Submit</Button>
 			</form>
+			<DisplayStatus status={status}/>
 			<DevTool control={control}/>
 		</>
 	)

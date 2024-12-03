@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "react-hook-form": "^7.53.2",
     "clsx": "^2.1.1",
     "flowbite-react": "^0.10.1",
     "next": "15.0.2",

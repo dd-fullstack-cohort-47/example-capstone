@@ -1,7 +1,7 @@
 'use client'
 import {Button, Label, Modal, ModalBody, ModalHeader, TextInput} from "flowbite-react";
 import React from "react";
-import {SignUpForm} from "@/app/sign-in/sign-up-modal/SignUpForm";
+import {SignUpForm} from "@/app/sign-in/sign-in-form/sign-up-modal/SignUpForm";
 
 export function SignUpModal() {
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
