@@ -3,7 +3,8 @@ import React from "react";
 import {PageProps} from "@/utils/interfaces/NextComponent";
 import Image from "next/image";
 import {Button, Label, TextInput} from "flowbite-react";
-import {SignUpForm} from "@/app/sign-in/SignUpForm";
+
+import {SignUpModal} from "@/app/sign-in/sign-up-modal/SignUpModal";
 
 
 export default function Home(props: PageProps) {
@@ -32,7 +33,7 @@ export default function Home(props: PageProps) {
 								</div>
 								<TextInput id="password1" type="password" required/>
 							</div>
-							<SignUpForm />
+							<SignUpModal />
 							<Button type="submit">Submit</Button>
 						</form>
 					</div>
