@@ -1,6 +1,6 @@
 'use server'
 import {SignIn} from "@/utils/models/sign-in/sign-in.model";
-import {cookies} from "next/headers";
+import {cookies, headers} from "next/headers";
 
 export async function preformSignIn(signIn: SignIn) {
 
@@ -13,6 +13,10 @@ export async function preformSignIn(signIn: SignIn) {
 	})
 
 	const authorization = response.headers.get("authorization")
+	const cookie = response.headers.getSetCookie()
+	const incomingHeaders = await headers()
+
+
 
 	if (authorization) {
 		const cookieJar = await cookies()
